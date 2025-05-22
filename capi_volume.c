@@ -26,9 +26,11 @@ static capi_v2_err_t capi_volume_set_properties(capi_v2_t* _pif,
                                                 capi_v2_proplist_t* props);
 static capi_v2_err_t capi_volume_get_properties(capi_v2_t* _pif,
                                                 capi_v2_proplist_t* props);
+
 static capi_v2_err_t capi_volume_get_static_properties(
     capi_v2_proplist_t* init_set_properties,
     capi_v2_proplist_t* static_properties);
+
 
 /* Implementation of the callbacks */
 
@@ -97,6 +99,7 @@ static capi_v2_err_t capi_volume_get_properties(capi_v2_t* _pif,
     /* Return properties such as algorithm version, port details, etc. */
     return CAPI_V2_EOK;
 }
+
 
 static capi_v2_err_t capi_volume_get_static_properties(
     capi_v2_proplist_t* init_set_properties,
