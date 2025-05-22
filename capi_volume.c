@@ -27,6 +27,11 @@ static capi_v2_err_t capi_volume_set_properties(capi_v2_t* _pif,
 static capi_v2_err_t capi_volume_get_properties(capi_v2_t* _pif,
                                                 capi_v2_proplist_t* props);
 
+static capi_v2_err_t capi_volume_get_static_properties(
+    capi_v2_proplist_t* init_set_properties,
+    capi_v2_proplist_t* static_properties);
+
+
 /* Implementation of the callbacks */
 
 static capi_v2_err_t capi_volume_init(capi_v2_t* _pif, capi_v2_proplist_t* init_set_properties)
@@ -92,6 +97,45 @@ static capi_v2_err_t capi_volume_get_properties(capi_v2_t* _pif,
                                                 capi_v2_proplist_t* props)
 {
     /* Return properties such as algorithm version, port details, etc. */
+    return CAPI_V2_EOK;
+}
+
+
+static capi_v2_err_t capi_volume_get_static_properties(
+    capi_v2_proplist_t* init_set_properties,
+    capi_v2_proplist_t* static_properties)
+{
+    (void)init_set_properties; /* Unused in this simple example */
+
+    if (!static_properties) {
+        return CAPI_V2_EBADPARAM;
+    }
+
+    for (uint32_t i = 0; i < static_properties->props_num; ++i) {
+        capi_v2_prop_t* prop = &static_properties->prop_ptr[i];
+
+        switch (prop->id) {
+        case CAPI_V2_PORT_NUM_INFO: {
+            capi_v2_port_num_info_t* port_info =
+                (capi_v2_port_num_info_t*)prop->payload.data_ptr;
+            port_info->num_input_ports = 1;
+            port_info->num_output_ports = 1;
+            prop->payload.actual_data_len = sizeof(capi_v2_port_num_info_t);
+            break;
+        }
+        case CAPI_V2_STACK_SIZE: {
+            capi_v2_stack_size_t* stack =
+                (capi_v2_stack_size_t*)prop->payload.data_ptr;
+            stack->size_in_bytes = 0;
+            prop->payload.actual_data_len = sizeof(capi_v2_stack_size_t);
+            break;
+        }
+        default:
+            /* For properties we don't handle, leave them untouched */
+            break;
+        }
+    }
+
     return CAPI_V2_EOK;
 }
 
