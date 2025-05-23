@@ -1,5 +1,5 @@
-# hobby
-Hobby repo
+# CAPI
+CAPI REPO
 
 This repository includes a basic Qualcomm CAPI module example in
 capi_volume.c. The sample implements all required entry points, including
